@@ -2,13 +2,11 @@ const { buildSystemPrompt, buildUserPrompt } = require('./promptBuilder');
 const { sanitizeRecord, hasContactInfo } = require('../utils/validators');
 
 const providers = {
-  anthropic: require('./providers/anthropic'),
-  openai: require('./providers/openai'),
-  gemini: require('./providers/gemini'),
+  openai: require('./providers/openai')
 };
 
 function getProvider() {
-  const name = (process.env.AI_PROVIDER || 'anthropic').toLowerCase();
+  const name = (process.env.AI_PROVIDER).toLowerCase();
   const provider = providers[name];
   if (!provider) {
     throw new Error(`Unknown AI_PROVIDER "${name}". Expected one of: ${Object.keys(providers).join(', ')}`);
@@ -48,7 +46,7 @@ async function extractBatch(indexedRows, headers) {
 
   for (const entry of parsed.results) {
     const originalIndex = entry.original_index;
-    if (!byIndex.has(originalIndex)) continue; // ignore hallucinated indices
+    if (!byIndex.has(originalIndex)) continue; 
 
     if (entry.skipped) {
       skipped.push({
